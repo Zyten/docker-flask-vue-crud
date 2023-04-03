@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  client:
+    image: vue-flask-client:latest
+    container_name: vue-flask-client
+    build: client
+    volumes:
+      - ./client:/root/app/client
+    ports:
+      - "8080:8080"
+    tty: true
+    command: >
+       sh -c "cd /root/app/client && npm install && npm run serve"
+  server:
+    image: vue-flask-server:latest
+    container_name: vue-flask-server
+    build: server
+    volumes:
+      - ./server:/root/app/server
+    ports:
+      - "5000:5000"
+    tty: true
+    command: >
+        bash -c "cd /root/app/server && gunicorn app:app -b 0.0.0.0:5000"
